@@ -48,7 +48,8 @@ class ApiResponse:
         return self.headers
 
     def set_body(self):
-        self.body = self.response.read()
+        body = self.response.read()
+        self.body = body.decode('utf-8')
 
     def get_body(self):
         return self.body
@@ -60,5 +61,5 @@ class ApiResponse:
         """
         self.parsed = json.loads(self.body)
 
-    def parse(self):
+    def get_parsed(self):
         return self.parsed
