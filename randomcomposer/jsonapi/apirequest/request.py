@@ -71,11 +71,20 @@ class ApiRequest:
     def get_headers(self):
         return self.headers
 
-    def create_request(self):
+    def create_request(self, url=None, url_parameters=None, headers=(), method=None, body=None):
         """
-        Create a urllib.Request object with self.url, self.body (if not None), self.headers and self.method
+        Create a urllib.Request object with url, headers, method and body. Sets them to
+        self.x when they are provided to this function.
         :return Request request:
         """
+        if url is not None:
+            self.set_url(url, url_parameters)
+        if headers is not None:
+            self.set_headers(headers)
+        if method is not None:
+            self.set_method(method)
+        if body is not None:
+            self.set_body(body)
         if self.body is None:
             request = Request(
                 url=self.url,
@@ -91,9 +100,14 @@ class ApiRequest:
             )
         return request
 
-    def execute(self):
+    def set_request(self, request):
+        self.request = request
+
+    def execute(self, request=None):
         """
         Perform the request
         :return HTTPResponse:
         """
+        if request is not None:
+            self.set_request(request)
         return urlopen(self.request)
