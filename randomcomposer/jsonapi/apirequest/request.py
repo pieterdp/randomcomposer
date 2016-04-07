@@ -4,12 +4,12 @@ from urllib.request import Request, urlopen
 
 class ApiRequest:
 
-    def __init__(self, url, url_parameters=None, headers=(), method='GET', body=None):
+    def __init__(self, api_url, url_parameters=None, headers=(), method='GET', body=None):
         self.url = ''
         self.body = ''
         self.method = 'GET'
         self.headers = {}
-        self.set_url(url, url_parameters)
+        self.set_url(api_url, url_parameters)
         self.set_headers(headers)
         self.set_method(method)
         self.set_body(body)
