@@ -80,7 +80,7 @@ class MediawikiApi:
         if continue_from is not None:
             options['cmcontinue'] = continue_from
         upstream_response = self.perform_request(options)
-        if not (200 <= upstream_response.get_status() <=299):
+        if not (200 <= upstream_response.get_status() <= 299):
             print('The remote returned an error: {0}'.format(upstream_response.get_status()))
             return items
         items.append(upstream_response.get_parsed())
@@ -100,7 +100,8 @@ class MediawikiApi:
         pages = []
         for item in items:
             for page_object in item['query']['categorymembers']:
-                pass
+                pages.append(page_object['title'])
+        return pages
 
     def get_subcategories(self, category_name):
         """

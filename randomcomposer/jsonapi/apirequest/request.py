@@ -1,5 +1,6 @@
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+#  https://requests-cache.readthedocs.org/en/latest/user_guide.html
 
 
 class ApiRequest:
