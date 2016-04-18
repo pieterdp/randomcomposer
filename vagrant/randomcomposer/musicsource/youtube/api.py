@@ -64,7 +64,7 @@ class YoutubeApi:
         youtube_options = self.options
         youtube_options['q'] = self.search_term
         self.request = ApiRequest(
-            url=self.api_url,
+            api_url=self.api_url,
             url_parameters=youtube_options,
             headers=headers,
             method='GET'

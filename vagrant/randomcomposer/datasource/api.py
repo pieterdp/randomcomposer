@@ -139,7 +139,7 @@ class MediawikiApi:
         Perform a request to the upstream API. You can override the options
         in self.options by specifying them in additional_opts
         """
-        options = self.options
+        options = dict(self.options)
         if additional_opts is not None:
             for key, value in additional_opts.items():
                 options[key] = value
