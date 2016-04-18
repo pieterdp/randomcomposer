@@ -96,11 +96,13 @@ class MediawikiApi:
         :param category_name:
         :return:
         """
+        category = re.compile('Category')
         items = self.get_items(category_name)
         pages = []
         for item in items:
             for page_object in item['query']['categorymembers']:
-                pages.append(page_object['title'])
+                if not category.search(page_object['title']):
+                    pages.append(page_object['title'])
         return pages
 
     def get_subcategories(self, category_name):
@@ -146,3 +148,29 @@ class MediawikiApi:
         request = ApiRequest(self.url, url_parameters=options)
         response = ApiResponse(request.execute())
         return response
+
+    def get_all_subcategories(self, categories):
+        """
+        Get all subcategories for every item in categories.
+        :param categories:
+        :return:
+        """
+        sub_categories = []
+        for category in categories:
+            sub_categories += self.flatten_subcategory_tree(category)
+        return sub_categories
+
+    def get_all_pages(self, categories=None):
+        """
+        Get all pages that are in the subcategory of every item in categories (defaults
+        to self.composer_cat if None)
+        :param categories:
+        :return:
+        """
+        if not categories:
+            categories = self.composer_cat
+        sub_categories = self.get_all_subcategories(categories)
+        pages = []
+        for sub_category in sub_categories:
+            pages += self.get_pages(sub_category)
+        return pages

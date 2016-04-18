@@ -64,3 +64,4 @@ target/
 # PyCharm
 .idea
 *.pyc
+config.py

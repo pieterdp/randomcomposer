@@ -1,7 +1,7 @@
 import re
 from randomcomposer.jsonapi.apirequest.request import ApiRequest
 from randomcomposer.jsonapi.apiresponse.response import ApiResponse
-#from app import app
+from randomcomposer import app
 
 
 class YoutubeApi:
@@ -11,8 +11,8 @@ class YoutubeApi:
     default_options = {
         'part': 'snippet',
         'type': 'video',
-        'videoDuration': 'long'#,
-#        'key': app.config['API_KEY']
+        'videoDuration': 'long',
+        'key': app.config['API_KEY']
     }
     api_url = 'https://www.googleapis.com/youtube/v3/search'
 
