@@ -1,7 +1,8 @@
-from randomcomposer.modules.cache import Cache
-from randomcomposer.datasource.api import MediawikiApi
-import json
 import datetime
+
+from randomcomposer.modules.providers.artists.mediawiki import MediawikiApi
+
+from randomcomposer.modules.cache import Cache
 
 
 class Artists:

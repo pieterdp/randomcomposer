@@ -1,8 +1,8 @@
-from randomcomposer.modules.cache import Cache
-from randomcomposer.musicsource.youtube.api import YoutubeApi
-from randomcomposer.processor.random import RandomArtist
 import datetime
-import json
+
+from randomcomposer.modules.cache import Cache
+from randomcomposer.modules.providers.music.youtube import YoutubeApi
+from randomcomposer.modules.providers.random.artist import RandomArtist
 
 
 class Music:
@@ -17,17 +17,15 @@ class Music:
             artist = self.random.remembered(previous_choices)
         else:
             artist = self.random.simple()
-        print(artist)
+        if not self.cache_valid(artist[1]):
+            self.to_cache(artist[1])
+        cached_item = self.from_cache(artist[1])
         if debug_artist:
             if not self.cache_valid(debug_artist):
                 self.to_cache(debug_artist)
             cached_item = self.from_cache(debug_artist)
-        else:
-            if not self.cache_valid(artist[1]):
-                self.to_cache(artist[1])
-            cached_item = self.from_cache(artist[1])
         video_ids = self.get_video_ids(cached_item['data'])
-        return video_ids
+        return artist, video_ids
 
     def cache_valid(self, artist_name):
         """
@@ -53,7 +51,23 @@ class Music:
         return self.cache.store(self.get_api_result(artist_name), artist_name)
 
     def get_api_result(self, artist_name):
-        yt = YoutubeApi(artist_name)
+        video_sizes = ('long', 'medium', 'short')
+        for video_size in video_sizes:
+            result = self.video_request(artist_name, {'videoDuration': video_size})
+            if len(result['items']) != 0:
+                return result
+
+    def video_request(self, artist_name, api_opt=None):
+        """
+        Helper function to perform requests to the upstream API
+        to get a video. Created a helper function so we can
+        recurse with e.g. videoDuration options when no results
+        are provided.
+        :param artist_name:
+        :param api_opt:
+        :return:
+        """
+        yt = YoutubeApi(search_term=artist_name, url_options=api_opt)
         return yt.get_response()
 
     def get_video_ids(self, result):

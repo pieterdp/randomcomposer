@@ -45,7 +45,7 @@ class MediawikiApi:
         """
         Set the options the MW API requires/expects. If a required parameter
         is not set, we use self.default_options for that parameter.
-        : param url_params: dictionary of URL parameters (key = value)
+        :param url_params: dictionary of URL parameters (key = value)
         """
         if url_params is None:
             url_params = {}
@@ -109,6 +109,7 @@ class MediawikiApi:
         """
         Get all subcategories for a given category. We get the parsed return value from the API.
         The information we want is in query.categorymembers
+        :param category_name:
         """
         items = self.get_items(category_name, url_options={'cmtype': 'subcat'})
         subcategories = []
@@ -126,6 +127,7 @@ class MediawikiApi:
         musical pieces instead of composers.
         We have a 'template' category in our tree. Those are internal MW templates,
         not composers. We skip them as well using a regular expression.
+        :param parent_category:
         """
         subcategories = []
         template = re.compile('template')
@@ -140,6 +142,7 @@ class MediawikiApi:
         """
         Perform a request to the upstream API. You can override the options
         in self.options by specifying them in additional_opts
+        :param additional_opts:
         """
         options = dict(self.options)
         if additional_opts is not None:

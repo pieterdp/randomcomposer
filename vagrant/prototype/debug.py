@@ -1,5 +1,6 @@
-from randomcomposer.processor.random import RandomComposer
 from randomcomposer.musicsource.youtube import YoutubeApi
+
+from randomcomposer.modules.providers.random.artist import RandomComposer
 
 random_composer_c = RandomComposer()
 random_composer = random_composer_c.random_composer

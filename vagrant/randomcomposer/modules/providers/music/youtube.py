@@ -10,7 +10,7 @@ class YoutubeApi:
     default_options = {
         'part': 'snippet',
         'type': 'video',
-        'videoDuration': 'long',
+        'videoDuration': 'long',  # CURRENTLY BROKEN: also support long
         'key': app.config['API_KEY']
     }
     api_url = 'https://www.googleapis.com/youtube/v3/search'
@@ -43,6 +43,7 @@ class YoutubeApi:
         Set the options the Youtube API requires/expects. If a required parameter
         is not set, we use self.default_options for that parameter.
         : param url_params: dictionary of URL parameters (key = value)
+        :param url_params:
         """
         if url_params is None:
             url_params = {}

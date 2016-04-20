@@ -13,8 +13,7 @@ class WebView:
 
     def get_music(self, previous_choices=(), debug_artist=None):
         result = self.music.get(previous_choices, debug_artist)
-        # We limit the result to 1
-        return result[0]
+        return result
 
     def build_video_url(self, video_id):
         return self.video_url.format(video_id=video_id)

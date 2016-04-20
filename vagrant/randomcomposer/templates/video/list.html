@@ -1,8 +1,19 @@
 {% extends 'base/layout.html' %}
 {% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="jumbotron">
+                <h1>{{ artist }}</h1>
+            </div>
+        </div>
+        </div>
     {% for embed_url in embed_urls %}
-        <iframe id="ytplayer" type="text/html" width="640" height="390"
-  src="{{ embed_url }}"
+        <div class="row">
+        <div class="col-md-4">
+            <iframe id="ytplayer" type="text/html" width="400" height="300"
+  src="{{ embed_url }}?showinfo=1"
   frameborder="0"></iframe>
+        </div>
+        </div>
     {% endfor %}
 {% endblock %}
