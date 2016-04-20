@@ -1,0 +1,8 @@
+{% extends 'base/layout.html' %}
+{% block content %}
+    {% for embed_url in embed_urls %}
+        <iframe id="ytplayer" type="text/html" width="640" height="390"
+  src="{{ embed_url }}"
+  frameborder="0"></iframe>
+    {% endfor %}
+{% endblock %}

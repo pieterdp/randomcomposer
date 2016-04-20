@@ -51,6 +51,8 @@ class Artists:
         return cached_item
 
     def to_cache(self):
+        if self.cache.invalidate('artist_list') is not True:
+            raise Exception('Failed to invalidate cache')
         return self.cache.store(self.get_api_result(), 'artist_list')
 
     def get_api_result(self):

@@ -7,7 +7,6 @@ from randomcomposer import app
 class YoutubeApi:
 
     best_of = '-best of'
-    #https://www.googleapis.com/youtube/v3/search?part=snippet&q=joseph+haydn+-best+of&type=video&videoDuration=long&key={YOUR_API_KEY}
     default_options = {
         'part': 'snippet',
         'type': 'video',

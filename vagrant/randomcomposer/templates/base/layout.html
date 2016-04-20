@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if title %}{{ title }}{% else %}Random Composer{% endif %}</title>
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='lib/bower_components/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='lib/bower_components/bootstrap/dist/css/bootstrap-theme.css') }}" rel="stylesheet"/>
+    <!-- Scripts -->
+    <!-- Bootstrap -->
+    <script src="{{ url_for('static', filename='lib/bower_components/jquery/dist/jquery.js') }}"></script>
+    <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='lib/bower_components/jquery/dist/jquery.js') }}"><\/script>')</script>
+    <script src="{{ url_for('static', filename='lib/bower_components/bootstrap/dist/js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/bower_components/bootstrap/js/transition.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/bower_components/bootstrap/js/collapse.js') }}"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-4 col-xs-4">
+            {% include 'base/navigation.html' %}
+        </nav>
+        <div class="col-md-8 col-xs-8">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
