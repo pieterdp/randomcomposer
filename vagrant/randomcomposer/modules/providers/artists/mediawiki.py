@@ -102,7 +102,9 @@ class MediawikiApi:
         for item in items:
             for page_object in item['query']['categorymembers']:
                 if not category.search(page_object['title']):
-                    pages.append(page_object['title'])
+                    # Clean
+                    cleaned_title = self.clean_page_title(page_object['title'])
+                    pages.append(cleaned_title)
         return pages
 
     def get_subcategories(self, category_name):
@@ -177,3 +179,13 @@ class MediawikiApi:
         for sub_category in sub_categories:
             pages += self.get_pages(sub_category)
         return pages
+
+    def clean_page_title(self, page_name):
+        """
+        Cleans the title of the page: removes everything between '(' & ')'
+        :param page_name:
+        :return:
+        """
+        brackets = re.compile(' \(.*\)$')
+        cleaned = brackets.sub('', page_name)
+        return cleaned
