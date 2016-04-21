@@ -10,7 +10,6 @@ class YoutubeApi:
     default_options = {
         'part': 'snippet',
         'type': 'video',
-        'videoDuration': 'long',  # CURRENTLY BROKEN: also support long
         'key': app.config['API_KEY']
     }
     api_url = 'https://www.googleapis.com/youtube/v3/search'
@@ -23,17 +22,22 @@ class YoutubeApi:
         self.set_options(url_options)
         self.set_request()
 
-    def set_search_term(self, unquoted_term):
+    def set_search_term(self, unquoted_term, append_music=True):
         """
         Sets self.search_term to the unquoted search term. Also append '-best of' to
         the search term to prevent Youtube from returning "Best Of" videos (we prefer
         complete musical pieces)
         """
         best_of = re.compile(self.best_of)
-        if best_of.search(unquoted_term):
-            self.search_term = '{0}'.format(unquoted_term)
+        if append_music:
+            search_term = '{0} {1}'.format(unquoted_term, 'music')
         else:
-            self.search_term = '{0} {1}'.format(unquoted_term, self.best_of)
+            search_term = unquoted_term
+        if best_of.search(unquoted_term):
+            search_term = '{0}'.format(search_term)
+        else:
+            search_term = '{0} {1}'.format(search_term, self.best_of)
+        self.search_term = search_term
 
     def get_search_term(self):
         return self.search_term

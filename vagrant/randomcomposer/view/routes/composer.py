@@ -1,53 +1,55 @@
-from flask import url_for, redirect, render_template, session
-import json
 from urllib.parse import quote, unquote
-from randomcomposer.modules.artists import Artists
-from randomcomposer.modules.providers.random.artist import RandomArtist
+
+from flask import render_template, session
+
 from randomcomposer import app
+from randomcomposer.view.composer.randomview import RandomView
 
 
-def store_previous_choice(choice):
-    if 'randomcomposer_choices' in session:
-        old_list = json.loads(session['randomcomposer_choices'])
-    else:
-        old_list = []
-    old_list.append(choice)
-    session['randomcomposer_choices'] = json.dumps(old_list)
-
-
-def get_previous_choices():
-    if 'randomcomposer_choices' in session:
-        choices_list = json.loads(session['randomcomposer_choices'])
-    else:
-        choices_list = []
-    return choices_list
+@app.route('/random/composer/choice')
+def v_random_composer_choice():
+    view = RandomView()
+    random_artist = view.random_artist(session=session)
+    return render_template('video/list.html', artist={
+        'display': random_artist,
+        'url_safe': quote(random_artist)
+    })
 
 
 @app.route('/random/composer')
 @app.route('/random/composer/')
 def v_random_composer():
-    artists = Artists()
-    random = RandomArtist(artist_list=artists.get())
-    remembered_choices = get_previous_choices()
-    random_artist = random.remembered(remembered_choices)
-    store_previous_choice(random_artist)
-    return render_template('video/list.html', artist={
-        'display': random_artist[1],
-        'url_safe': quote(random_artist[1])
-    })
+    view = RandomView()
+    random_artist = view.random_artist(session=session)
+    embed_link = view.video_embed_link(random_artist)
+    return render_template('video/item.html', artist={'display': random_artist}, embed_url=embed_link,
+                           title=random_artist)
 
 
-@app.route('/random/composer/<string:composer_name>/link')
+@app.route('/random/playlist')
+@app.route('/random/playlist/')
+def v_random_playlist():
+    view = RandomView()
+    random_artist = view.random_artist(session=session)
+    embed_links = view.videos_embed_links(random_artist)
+    return render_template('video/items.html', artist={'display': random_artist}, embed_urls=embed_links,
+                           title=random_artist)
+
+
+@app.route('/random/composer/<string:composer_name>/video')
 def v_link_composer(composer_name):
-    unparsed_composer = unquote(composer_name)
+    unquoted_composer = unquote(composer_name)
+    view = RandomView()
+    embed_link = view.video_embed_link(unquoted_composer)
+    return render_template('video/item.html', artist={'display': unquoted_composer}, embed_url=embed_link,
+                           title=unquoted_composer)
 
 
-@app.route('/random/composer/playlist')
-@app.route('/random/composer/playlist/')
-def v_playlist():
-    pass
-
-
+@app.route('/random/composer/<string:composer_name>/playlist')
 @app.route('/random/composer/<string:composer_name>/playlist/')
 def v_playlist_composer(composer_name):
-    pass
+    unquoted_composer = unquote(composer_name)
+    view = RandomView()
+    embed_links = view.videos_embed_links(unquoted_composer)
+    return render_template('video/items.html', artist={'display': unquoted_composer}, embed_urls=embed_links,
+                           title=unquoted_composer)
