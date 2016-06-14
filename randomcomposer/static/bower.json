@@ -1,0 +1,22 @@
+{
+  "name": "randomcomposer",
+  "homepage": "https://github.com/pieterdp/randomcomposer",
+  "authors": [
+    "Pieter De Praetere <pieter.de.praetere@helptux.be>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "GPLv3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.4",
+    "bootstrap": "^3.3.6"
+  }
+}
